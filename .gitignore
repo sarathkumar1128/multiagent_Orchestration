@@ -38,6 +38,9 @@ htmlcov/
 *.swp
 *.swo
 *.tmp
+finalprompt_*.txt
+orchestration_result.txt
+output/
 *.env
 *.orig
 *.old
