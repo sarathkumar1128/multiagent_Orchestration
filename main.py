@@ -5,10 +5,10 @@ from coordinator import Coordinator
 def main():
     setup_logger()
 
-    user_input = "Create a production-ready Task Management Application."
+    user_input = "Create a production-ready Task Management Application frontend react,middleware python,backend mysqls."
 
     coordinator = Coordinator()
-    output = coordinator.execute(user_input)
+    output = coordinator.execute(user_input, session_id="default_session")
 
     print("\n\n=========== GENERATED APPLICATION ===========\n")
     print(output)

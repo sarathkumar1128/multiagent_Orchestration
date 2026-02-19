@@ -15,19 +15,22 @@ class Coordinator:
         self.react_agent = ReactAgent()
         self.gemini = GeminiService()
 
-    def execute(self, user_request: str):
+    def execute(self, user_request: str, session_id: str):
 
         logging.info("Orchestration started")
-
+       
         logging.info("Selecting agents")
+        
+        frontend_section = self.react_agent.build_section()
+        logging.info("React Agent executed")
+
         sql_section = self.sql_agent.build_section()
         logging.info("SQL Agent executed")
 
         backend_section = self.python_agent.build_section()
         logging.info("Python Agent executed")
 
-        frontend_section = self.react_agent.build_section()
-        logging.info("React Agent executed")
+       
 
         final_prompt = PromptAggregator.combine(
             user_request,
@@ -38,7 +41,19 @@ class Coordinator:
 
         logging.info("Final prompt constructed")
 
+        # Store final prompt in a text file with session id
+        final_prompt_filename = f"finalprompt_{session_id}.txt"
+        with open(final_prompt_filename, "w", encoding="utf-8") as f:
+            f.write(final_prompt)
+
         result = self.gemini.generate(final_prompt)
+
+        # Store result in a text file
+        with open("orchestration_result.txt", "w", encoding="utf-8") as f:
+            f.write(result)
+
+        # Log the final Gemini response
+        logging.info(f"Gemini final response: {result}")
 
         logging.info("Orchestration completed")
 

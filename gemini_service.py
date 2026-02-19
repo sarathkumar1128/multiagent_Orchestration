@@ -11,21 +11,22 @@ logger = logging.getLogger(__name__)
 
 class GeminiService:
 
+  
     def __init__(self):
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise Exception("GEMINI_API_KEY not set")
 
-        self.model_name = "models/gemini-pro"
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel(self.model_name)
+        self.model_name = "gemini-2.5-flash"
+        self.client = genai.Client(api_key=api_key)
 
     def generate(self, prompt: str):
         try:
             logger.info("Gemini SDK call started")
-            response = self.model.generate_content(
-                prompt,
-                generation_config={
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config={
                     "max_output_tokens": 4000,
                     "temperature": 0.5,
                     "top_p": 0.9,

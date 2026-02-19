@@ -38,6 +38,7 @@ htmlcov/
 *.swp
 *.swo
 *.tmp
+*.env
 *.orig
 *.old
 
